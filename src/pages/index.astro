@@ -1,0 +1,13 @@
+---
+// src/pages/index.astro
+import "../styles/global.css";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+---
+
+<main>
+	<Card className="m-8 p-6" client:visible>
+		<h1>Welcome to Astro</h1>
+		<Button>Destructive</Button>
+	</Card>
+</main>
