@@ -1,22 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import MusicCard from "@/components/custom/MusicCard";
 import axios from "axios";
 const r = await axios.get(`https://api.deezer.com/chart/0`);
 ---
 
 <BaseLayout pageTitle="Home">
 	<main>
-		{
-			r.data["tracks"]["data"].map(
-				(
-					e: any, // fix type
-				) => (
-					<>
-						<div class="text-black">{e["title"]}</div>
-						<img src={e["album"]["cover_medium"]} />
-					</>
-				),
-			)
-		}
-	</main>
-</BaseLayout>
+		<div
+			class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+		>
+			{
+				r.data["tracks"]["data"].map(
+					(
+						e: any, // fix type
+					) => <MusicCard track={e} />,
+				)
+			}
+			<div></div>
+		</div>
+	</main></BaseLayout
+>
