@@ -1,0 +1,54 @@
+{
+  "version": "5",
+  "specifiers": {
+    "jsr:@std/assert@*": "1.0.14",
+    "jsr:@std/internal@^1.0.10": "1.0.10"
+  },
+  "jsr": {
+    "@std/assert@1.0.14": {
+      "integrity": "68d0d4a43b365abc927f45a9b85c639ea18a9fab96ad92281e493e4ed84abaa4",
+      "dependencies": [
+        "jsr:@std/internal"
+      ]
+    },
+    "@std/internal@1.0.10": {
+      "integrity": "e3be62ce42cab0e177c27698e5d9800122f67b766a0bea6ca4867886cbde8cf7"
+    }
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@astrojs/mdx@^4.3.6",
+        "npm:@astrojs/react@^4.3.1",
+        "npm:@astrojs/svelte@^7.2.0",
+        "npm:@deno/astro-adapter@~0.3.2",
+        "npm:@radix-ui/react-hover-card@^1.1.15",
+        "npm:@radix-ui/react-slot@^1.2.3",
+        "npm:@radix-ui/react-tabs@^1.1.13",
+        "npm:@radix-ui/react-tooltip@^1.2.8",
+        "npm:@supabase/ssr@0.7",
+        "npm:@supabase/supabase-js@^2.57.4",
+        "npm:@tailwindcss/vite@^4.1.13",
+        "npm:@types/canvas-confetti@^1.9.0",
+        "npm:@types/react-dom@^19.1.9",
+        "npm:@types/react@^19.1.13",
+        "npm:astro@^5.13.10",
+        "npm:axios@^1.12.2",
+        "npm:canvas-confetti@^1.9.3",
+        "npm:class-variance-authority@~0.7.1",
+        "npm:clsx@^2.1.1",
+        "npm:lucide-react@0.544",
+        "npm:prettier-plugin-astro@~0.14.1",
+        "npm:prettier@^3.6.2",
+        "npm:react-dom@^19.1.1",
+        "npm:react@^19.1.1",
+        "npm:supabase@^2.45.5",
+        "npm:svelte@^5.39.6",
+        "npm:tailwind-merge@^3.3.1",
+        "npm:tailwindcss@^4.1.13",
+        "npm:tw-animate-css@^1.3.8",
+        "npm:typescript@^5.9.2"
+      ]
+    }
+  }
+}

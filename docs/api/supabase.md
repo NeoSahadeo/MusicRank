@@ -8,9 +8,13 @@ will return and empty array or will silently fail.
 
 ## Fetch Rankings
 
-`api/supabase/fetch_rankings`
+### Get
 
-### Schema
+Returns the rankings from the rankings table
+
+`api/supabase/rankings`
+
+#### Schema
 
 ```
 create table public.rankings (
