@@ -22,7 +22,7 @@ type Context = {
 };
 
 export const createSupabaseServerInstance = (context: Context) =>
-	// this is correct, the lsp for supabase is bugged
+	// NOTE: this is correct, the lsp for supabase is bugged and types do not match
 	createServerClient(
 		import.meta.env.SUPABASE_URL,
 		import.meta.env.SUPABASE_ANON_KEY,
