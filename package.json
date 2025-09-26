@@ -8,7 +8,7 @@
     "preview": "deno run --allow-net --allow-read --allow-env ./dist/server/entry.mjs",
     "astro": "astro",
     "dev:supabase": "supabase start",
-    "test": "deno test"
+    "test:api": "deno test --allow-net --allow-env --allow-read"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.6",
