@@ -2,7 +2,7 @@
 
 This is the API for Supabase interactions, such as read/write/delete/put/update/patch
 
-The user must be authenticated before querying the endpoints otherwise the
+The user must be authenticated before querying the endpoints otherwise it
 will return an empty array.
 
 
