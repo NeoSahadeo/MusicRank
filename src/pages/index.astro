@@ -1,18 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import MusicCard from "@/components/custom/MusicCard";
+import MusicCard from "@/components/custom/music-card";
 import axios from "axios";
-// const r = await axios.get(`https://api.deezer.com/chart/0`);
-import SignIn from "@/components/custom/SignIn.svelte";
-import type { UserType } from "@/types/user";
-
-const user = (Astro.locals.user as UserType).user;
-console.log(user);
+import MusicList from "@/components/custom/music-list";
+const r = await axios.get(`https://api.deezer.com/chart/0`);
 ---
 
 <BaseLayout pageTitle="Home">
-	<main>
-		<SignIn client:load />
-		{user && <div>{JSON.stringify(user)}</div>}
-	</main>
+  <!-- <main> -->
+  <!-- <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
+    > -->
+  <!-- {
+        r.data["tracks"]["data"].map(
+          (
+            e: any // fix type
+          ) => <MusicCard track={e} />
+        )
+      } -->
+  <MusicList tracks={r.data["tracks"]["data"]} client:load />
+  <!-- </div> -->
 </BaseLayout>
