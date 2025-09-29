@@ -6,14 +6,13 @@ The user must be authenticated before querying the endpoints otherwise the
 will return an empty array.
 
 
-## Fetch Rankings
+## Rankings
 
-### Get
+`GET api/supabase/rankings`
 
 Returns the rankings from the rankings table
 
-`api/supabase/rankings`
 
-#### Query Params
+**Query Params:**
 
 - page: int

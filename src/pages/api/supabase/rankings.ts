@@ -30,5 +30,6 @@ export const GET: APIRoute = async ({ url: { searchParams } }) => {
 
 export const POST: APIRoute = async ({ request }) => {
 	const supabase = createSupabaseClientInstance();
+	console.log("hello world");
 	return new Response();
 };
