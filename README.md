@@ -34,5 +34,5 @@ pnpm run dev
 Currently, contributors are limited. When the project is fully-release
 it may change.
 
--@[Vincent](https://github.com/Vincentlee777)
--@[DJDare](https://github.com/DJDare)
+- @[Vincent](https://github.com/Vincentlee777)
+- @[DJDare](https://github.com/DJDare)
