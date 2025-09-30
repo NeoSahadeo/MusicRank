@@ -16,8 +16,10 @@ const user = Astro.locals.user || {};
   </head>
   <body>
     <Header userData={user} client:load />
-    <div class="flex m-3 flex-col items-center justify-center">
-      <slot />
-    </div>
+    <main>
+      <div class="flex m-3 flex-col items-center justify-center">
+        <slot />
+      </div>
+    </main>
   </body>
 </html>
