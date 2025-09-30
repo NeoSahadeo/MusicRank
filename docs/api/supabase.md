@@ -1,10 +1,28 @@
 # Overview
 
-This is the API for Supabase interactions, such as read/write/delete/put/update/patch
+This is the API for Supabase interactions, such as
+read/write/delete/put/update/patch
 
-The user must be authenticated before querying the endpoints otherwise it
-will return an empty array.
+The user must be authenticated before querying the endpoints otherwise it may
+return an empty array.
 
+The api uses [Astro Actions](https://docs.astro.build/en/guides/actions/)
+throughout various parts, please be somewhat familiar with it.
+
+## Google Sign In
+
+`POST`
+
+Call the astro action to send a login request (.env with the Google secret
+should have been setup).
+
+Currently, you should [navigate](https://docs.astro.build/en/reference/modules/astro-transitions/#navigate) to the returned page.
+
+For an example see [commit 0755046](https://github.com/NeoSahadeo/MusicRank/blob/0755046/src/components/custom/SignIn.svelte)
+
+```typescript
+navigate(((await actions.creds.googleSignIn())).data)
+```
 
 ## Rankings
 
@@ -19,12 +37,13 @@ Returns the rankings from the rankings table
 
 `POST`
 
-POST requests are used to create, update, and delete
-items from the rankings table. These will use [Astro Actions](https://docs.astro.build/en/guides/actions/)
-so you should import the actions and use its'
-methods.
+POST requests are used to create, update, and delete items from the rankings
+table. These will use [Astro
+Actions](https://docs.astro.build/en/guides/actions/) so you should import the
+actions and use its' methods.
 
-If you would like to view an example please see [commit 0755046](https://github.com/NeoSahadeo/MusicRank/blob/0755046/src/components/custom/PostRank.svelte)
+If you would like to view an example please see [commit
+0755046](https://github.com/NeoSahadeo/MusicRank/blob/0755046/src/components/custom/PostRank.svelte)
 
 ```typescript
 // Create

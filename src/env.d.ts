@@ -1,5 +1,3 @@
-import type { UserType } from "./types/user";
-
 interface ImportMetaEnv {
   readonly SUPABASE_URL: string;
   readonly SUPABASE_ANON_KEY: string;
@@ -11,6 +9,6 @@ interface ImportMeta {
 
 declare namespace App {
   interface Locals {
-    user: UserType;
+    user: import("./types/user").UserType;
   }
 }

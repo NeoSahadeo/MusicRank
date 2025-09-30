@@ -20,4 +20,17 @@ export const creds = {
 			return data.url;
 		},
 	}),
+
+	googleSignOut: defineAction({
+		handler: async (_, context) => {
+			const supabase = createSupabaseServerInstance({
+				headers: context.request.headers,
+				cookies: context.cookies,
+			});
+			const { error } = await supabase.auth.signOut();
+			if (error) {
+				// TODO: log error
+			}
+		},
+	}),
 };
