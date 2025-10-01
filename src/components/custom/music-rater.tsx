@@ -24,6 +24,8 @@ type MusicCardProps = {
 };
 
 export function MusicRater({ track, orientation }: MusicCardProps) {
+  if (!track) return;
+
   return (
     <Dialog>
       <DialogTrigger asChild>

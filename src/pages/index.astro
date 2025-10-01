@@ -1,23 +1,10 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import MusicCard from "@/components/custom/music-card";
 import axios from "axios";
-import MusicList from "@/components/custom/music-list";
+import MusicInfLoading from "@/components/custom/MusicInfLoad";
 const r = await axios.get(`https://api.deezer.com/chart/0`);
 ---
 
 <BaseLayout pageTitle="Home">
-  <!-- <main> -->
-  <!-- <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
-    > -->
-  <!-- {
-        r.data["tracks"]["data"].map(
-          (
-            e: any // fix type
-          ) => <MusicCard track={e} />
-        )
-      } -->
-  <MusicList tracks={r.data["tracks"]["data"]} client:load />
-  <!-- </div> -->
+  <MusicInfLoading client:only="react" />
 </BaseLayout>
