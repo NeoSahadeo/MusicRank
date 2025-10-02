@@ -4,16 +4,13 @@ import MusicList from "./music-list";
 import { Button } from "../ui/button";
 
 const queryClient = new QueryClient();
-const corsProxy = "https://proxy.corsfix.com/?";
 
 export default function MusicInfLoading() {
 	const [tracks, setTracks] = useState([]);
 
 	const fetchProjects = async ({ pageParam = 0 }) => {
 		const res = await fetch(
-			corsProxy +
-			"https://api.deezer.com/chart/0/tracks?limit=25&index=" +
-			pageParam,
+			`${import.meta.env.BASE_URL}api/proxy?url=https://api.deezer.com/chart/0/tracks?limit=25&index=${pageParam}`,
 		);
 		return res.json();
 	};
