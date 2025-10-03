@@ -59,18 +59,15 @@ export default function MusicList({ tracks }: MusicListProps) {
         {tracks.map(
           (
             track: any, // FIXME: fix type
-          ) => (
-            // <MusicCard
-            //   track={track}
-            //   key={track["title"]}
-            //   orientation={cardOrientation}
-            // />
-            <MusicRater
-              key={track["title"]}
-              track={track}
-              orientation={cardOrientation}
-            />
-          ),
+          ) => {
+            return (
+              <MusicRater
+                key={track["id"]}
+                track={track}
+                orientation={cardOrientation}
+              />
+            );
+          },
         )}
       </div>
     </div>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { cn } from "../../lib/utils.ts";
 import type { UserType } from "../../types/user.js";
+import SearchBar from "../custom/searchbar.tsx";
 
 import { Button } from "@/components/ui/button";
 
@@ -43,9 +44,12 @@ export default function Header({ userData }: { userData?: UserType }) {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/50 backdrop-blur-lg">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <span className="text-white font-bold">MusicRank</span>
-        <nav className="hidden md:flex items-center space-x-6">
+      <div className="flex h-16 items-center px-3">
+        <span className="text-white font-bold mr-2">MusicRank</span>
+        <span>
+          <SearchBar />
+        </span>
+        <nav className="hidden md:flex items-center space-x-6 ml-auto mr-10">
           {links.map((item) => (
             <a
               key={item.href}
