@@ -1,8 +1,8 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import MusicInfLoading from "@/components/custom/MusicInfLoad";
+import MusicInfLoadingWrapper from "@/components/custom/MusicInfLoad";
 ---
 
 <BaseLayout pageTitle="Home">
-  <MusicInfLoading client:only="react" />
+  <MusicInfLoadingWrapper client:load />
 </BaseLayout>
