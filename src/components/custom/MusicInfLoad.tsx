@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useInfiniteQuery, QueryClient } from "@tanstack/react-query";
 import MusicList from "./music-list";
 import { Button } from "../ui/button";
@@ -25,9 +25,7 @@ function MusicInfLoading() {
     const res = await fetch(
       `${import.meta.env.BASE_URL}api/proxy?url=${encodedUrl}`,
     );
-    const d = await res.json();
-    console.log(d);
-    return d;
+    return await res.json();
   };
 
   const {
@@ -50,10 +48,8 @@ function MusicInfLoading() {
   });
 
   useMemo(() => {
-    console.log(data);
     let d = [] as any;
     setTracks([]);
-    console.debug(data?.pages);
     data?.pages.forEach((group: any, i) => {
       d.push(group.data);
     });
@@ -67,7 +63,6 @@ function MusicInfLoading() {
     return <p>Error: {error.message}</p>;
   }
 
-  // FIXME: ADD types
   return (
     <>
       <MusicList tracks={tracks} />

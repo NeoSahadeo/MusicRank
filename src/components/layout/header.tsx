@@ -34,7 +34,6 @@ export default function Header({ userData }: { userData?: UserType }) {
   let user: UserType["user"] | null = null;
   if (userData) {
     user = userData.user;
-    console.log(user);
   }
 
   const [pathname, setPathname] = useState("");

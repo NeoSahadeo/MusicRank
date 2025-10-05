@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from "@/lib/utils";
+import type { DeezerTrack } from "@/types/deezer";
 
 interface Props {
-  track: any;
+  track: DeezerTrack;
   orientation?: "vertical" | "horizontal";
   avatarClass?: string;
 }
@@ -20,10 +21,7 @@ export default function TrackSummary({
       )}
     >
       <Avatar className={cn("size-10", avatarClass)}>
-        <AvatarImage
-          src={track["album"]["cover_medium"]}
-          alt={track["title"]}
-        />
+        <AvatarImage src={track.album.cover_medium} alt={track.title} />
         {/*FIXME: <AvatarFallback>??</AvatarFallback> */}
       </Avatar>
 
@@ -34,11 +32,17 @@ export default function TrackSummary({
         )}
       >
         <h3 className="font-semibold truncate text-sm text-foreground">
-          {track["title"]}
+          <a href={track.link} className="hover:underline">
+            {track.title}
+          </a>
         </h3>
-        <p className="text-xs text-muted-foreground truncate">
-          {track["artist"]["name"]}
-        </p>
+        <a
+          href={track.artist.link}
+          className="text-xs text-muted-foreground truncate hover:underline"
+          target="_blank"
+        >
+          {track.artist.name}
+        </a>
       </div>
     </div>
   );
