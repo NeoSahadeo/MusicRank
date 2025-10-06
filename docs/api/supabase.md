@@ -47,21 +47,21 @@ If you would like to view an example please see [commit
 
 ```typescript
 // Create
-// Requires, a songId(text), rating(number), and review(text)
+// Requires, a songId(number), rating(number), and review(text)
 // Will return a duplication error if the songId collides
 
 actions.rankactions.postRank(formData);
 
 // Update
-// Requires, a songId(text), rating(number), and review(text)
+// Requires, a songId(number), rating(number), and review(text)
 // Will return a missing error if no songId exists
 actions.rankactions.updateRank(formData);
 
 // Delete
-// Requires, a songId(text)
+// Requires, a songId(number)
 actions.rankactions.deleteRank(formData);
 
 // Get
-// Requires, a songId(text)
+// Requires, a songId(number)
 actions.rankactions.getRank(formData);
 ```
