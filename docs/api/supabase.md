@@ -37,7 +37,7 @@ Returns the rankings from the rankings table
 
 `POST`
 
-POST requests are used to create, update, and delete items from the rankings
+POST requests are used to create, update, get, and delete items from the rankings
 table. These will use [Astro
 Actions](https://docs.astro.build/en/guides/actions/) so you should import the
 actions and use its' methods.
@@ -60,4 +60,8 @@ actions.rankactions.updateRank(formData);
 // Delete
 // Requires, a songId(text)
 actions.rankactions.deleteRank(formData);
+
+// Get
+// Requires, a songId(text)
+actions.rankactions.getRank(formData);
 ```

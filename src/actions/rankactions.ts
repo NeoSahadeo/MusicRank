@@ -1,14 +1,34 @@
 import { createSupabaseServerInstance } from "@/lib/supabase";
+import type { RankingsTable } from "@/types/supabase";
 import { defineAction } from "astro:actions";
 import { z } from "astro:schema";
 
 const defaultSchema = {
 	rating: z.number().min(0).max(5).step(0.5),
 	review: z.string(),
-	songId: z.string().max(255), // SUGGESTION: might change
+	songId: z.number(),
 };
 
 export const rankactions = {
+	getRank: defineAction({
+		accept: "form",
+		input: z.object({
+			songId: z.number(),
+		}),
+		handler: async ({ songId }, context): Promise<any[] | null> => {
+			const supabase = createSupabaseServerInstance({
+				headers: context.request.headers,
+				cookies: context.cookies,
+			});
+			const { data, error } = await supabase
+				.from("rankings")
+				.select()
+				.eq("song_id", songId);
+			if (error) console.log(error);
+			return data as RankingsTable[];
+		},
+	}),
+
 	postRank: defineAction({
 		accept: "form",
 		input: z.object(defaultSchema),
@@ -25,6 +45,7 @@ export const rankactions = {
 			if (error) console.log(error);
 		},
 	}),
+
 	updateRank: defineAction({
 		accept: "form",
 		input: z.object(defaultSchema),

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { act, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,6 +18,9 @@ import { Separator } from "../ui/separator";
 import { Rating, RatingButton } from "../ui/shadcn-io/rating";
 import { Play } from "lucide-react";
 import type { DeezerTrack } from "@/types/deezer";
+import type { RankingsTable } from "@/types/supabase";
+
+import { actions } from "astro:actions";
 
 type MusicCardProps = {
   track: DeezerTrack;
@@ -26,26 +29,77 @@ type MusicCardProps = {
 };
 
 export function MusicRater({ track, orientation }: MusicCardProps) {
+  const [submitting, setSubmitting] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [rating, setRating] = useState<number>(0);
-
-  useEffect(() => {
-    // TODO: Added a form send for rating updates only if the dialog is not open
-  }, [rating]);
 
   if (!track) return;
 
   function RatingComponent({ ...props }) {
     return (
-      <Rating value={rating} onValueChange={setRating} {...props}>
+      <Rating
+        readOnly={submitting}
+        value={rating}
+        onValueChange={async (e) => {
+          if (submitting) return;
+
+          const initialValue = rating;
+          setRating(e);
+
+          // INFO: Handle submit through dialog if open
+          if (isOpen) return;
+
+          // POST/UPDATE FORM
+          const d1: Record<string, any> = {
+            songId: track.id,
+            rating: e,
+            review: null,
+          };
+          const formDataD1 = new FormData();
+          for (const key in d1) {
+            formDataD1.append(key, d1[key]);
+          }
+
+          // GET FORM
+          const d2: Record<string, any> = {
+            songId: track.id,
+          };
+          const formDataD2 = new FormData();
+          for (const key in d2) {
+            formDataD2.append(key, d2[key]);
+          }
+
+          setSubmitting(true);
+          const { data } = await actions.rankactions.getRank(formDataD2);
+          if (data && data.length > 0) {
+            await actions.rankactions.updateRank(formDataD1);
+          } else {
+            await actions.rankactions.postRank(formDataD1);
+          }
+          const p = await actions.rankactions.getRank(formDataD2);
+          if (p.data && p.data?.length > 0) {
+            setRating((p.data[0] as RankingsTable).rating / 10);
+          } else {
+            setRating(initialValue);
+          }
+          setSubmitting(false);
+        }}
+        {...props}
+      >
         {Array.from({ length: 5 }).map((_, index) => (
-          <RatingButton key={index} icon={<Play />} size={16} />
+          <RatingButton
+            key={index}
+            icon={<Play />}
+            size={16}
+            className={`${submitting && "hover:cursor-progress"}`}
+          />
         ))}
       </Rating>
     );
   }
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <span className="flex w-full border-1 rounded-lg pr-3">
         <DialogTrigger asChild>
           <span className="flex-1">
