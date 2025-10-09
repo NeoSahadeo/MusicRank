@@ -1,13 +1,18 @@
-import { useMemo, useState } from "react";
-import { useInfiniteQuery, QueryClient } from "@tanstack/react-query";
+import { useEffect, useMemo, useState } from "react";
+import {
+  useInfiniteQuery,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import MusicList from "./music-list";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
 import { $search } from "@/stores/search";
+import { $tracks, setTracks, resetTracks } from "@/stores/tracks";
 
 function MusicInfLoading() {
-  const [tracks, setTracks] = useState([]);
   const search = useStore($search);
+  const tracks = useStore($tracks);
 
   const fetchTracks = async ({
     search,
@@ -47,9 +52,8 @@ function MusicInfLoading() {
     },
   });
 
-  useMemo(() => {
+  useEffect(() => {
     let d = [] as any;
-    setTracks([]);
     data?.pages.forEach((group: any, i) => {
       d.push(group.data);
     });
@@ -83,8 +87,6 @@ function MusicInfLoading() {
     </>
   );
 }
-import { QueryClientProvider } from "@tanstack/react-query";
-
 export default function MusicInfLoadingWrapper() {
   const [queryClient] = useState(() => new QueryClient());
   return (

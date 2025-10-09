@@ -10,6 +10,22 @@ const defaultSchema = {
 };
 
 export const rankactions = {
+	getAllRankings: defineAction({
+		handler: async (_, context): Promise<any[]> => {
+			const supabase = createSupabaseServerInstance({
+				headers: context.request.headers,
+				cookies: context.cookies,
+			});
+
+			const userId = (await supabase.auth.getUser()).data.user?.id;
+			const { data, error } = await supabase
+				.from("rankings")
+				.select()
+				.eq("user_id", userId);
+			if (error) console.log(error);
+			return data as RankingsTable[];
+		},
+	}),
 	getRank: defineAction({
 		accept: "form",
 		input: z.object({

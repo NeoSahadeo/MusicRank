@@ -31,7 +31,9 @@ type MusicCardProps = {
 export function MusicRater({ track, orientation }: MusicCardProps) {
   const [submitting, setSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [rating, setRating] = useState<number>(0);
+  const [rating, setRating] = useState<number>(
+    track.rating ? track.rating / 10 : 0,
+  );
 
   if (!track) return;
 

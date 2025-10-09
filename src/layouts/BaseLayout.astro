@@ -1,7 +1,9 @@
 ---
+import { actions } from "astro:actions";
 import "@/styles/global.css";
 import Header from "@/components/layout/header";
 import ClientOnlyQueryClientProvider from "@/providers/ClientOnlyQueryClientProvider";
+import { $tracks, setUserTracks } from "@/stores/tracks";
 
 const { pageTitle } = Astro.props;
 

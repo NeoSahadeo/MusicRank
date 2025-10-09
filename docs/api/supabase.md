@@ -64,4 +64,7 @@ actions.rankactions.deleteRank(formData);
 // Get
 // Requires, a songId(number)
 actions.rankactions.getRank(formData);
+
+// Get all
+actions.rankactions.getAllRankings();
 ```

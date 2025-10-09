@@ -1,3 +1,4 @@
+import type { RankingsTable } from "./supabase";
 export type DeezerTrack = {
 	id: number;
 	readable: boolean;
@@ -37,4 +38,4 @@ export type DeezerTrack = {
 		type: string;
 	};
 	type: string;
-};
+} & RankingsTable;
