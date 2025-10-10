@@ -5,7 +5,7 @@ import { z } from "astro:schema";
 
 const defaultSchema = {
 	rating: z.number().min(0).max(5).step(0.5),
-	review: z.string(),
+	review: z.union([z.string(), z.null()]),
 	songId: z.number(),
 };
 

@@ -1,13 +1,15 @@
-import { act, useEffect, useMemo, useState } from "react";
+// TODO: Clean up code
+// TODO: Set loading state for the pull on form open
+
+import type { RefObject } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
@@ -28,6 +30,47 @@ type MusicCardProps = {
   orientation?: "vertical" | "horizontal";
 };
 
+function produceGetForm(track: DeezerTrack) {
+  const d: Record<string, any> = {
+    songId: track.id,
+  };
+  const f = new FormData();
+  for (const key in d) {
+    f.append(key, d[key]);
+  }
+  return f;
+}
+
+async function submitForm({
+  track,
+  reviewRef,
+  rating,
+}: {
+  track: DeezerTrack;
+  reviewRef: RefObject<HTMLTextAreaElement | null>;
+  rating: number;
+}) {
+  const d1: Record<string, any> = {
+    songId: track.id,
+    rating: rating,
+    review: reviewRef.current?.value ?? null,
+  };
+  const formDataD1 = new FormData();
+  for (const key in d1) {
+    formDataD1.append(key, d1[key]);
+  }
+
+  // GET FORM
+  const formDataD2 = produceGetForm(track);
+
+  const { data } = await actions.rankactions.getRank(formDataD2);
+  if (data && data.length > 0) {
+    await actions.rankactions.updateRank(formDataD1);
+  } else {
+    await actions.rankactions.postRank(formDataD1);
+  }
+}
+
 export function MusicRater({ track, orientation }: MusicCardProps) {
   const [submitting, setSubmitting] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +78,25 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
     track.rating ? track.rating / 10 : 0,
   );
 
+  const reviewRef = useRef<HTMLTextAreaElement>(null);
+  const [reviewValue, setReviewValue] = useState<string>("");
+
   if (!track) return;
+
+  useMemo(async () => {
+    if (isOpen) {
+      let review = "";
+      const f = produceGetForm(track);
+      const { data } = (await actions.rankactions.getRank(f)) as any as {
+        data: RankingsTable[];
+      };
+      if (data && data.length > 0) {
+        review = data[0].review;
+        setRating(data[0].rating / 10);
+      }
+      setReviewValue(review);
+    }
+  }, [isOpen]);
 
   function RatingComponent({ ...props }) {
     return (
@@ -51,33 +112,15 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
           // INFO: Handle submit through dialog if open
           if (isOpen) return;
 
-          // POST/UPDATE FORM
-          const d1: Record<string, any> = {
-            songId: track.id,
-            rating: e,
-            review: null,
-          };
-          const formDataD1 = new FormData();
-          for (const key in d1) {
-            formDataD1.append(key, d1[key]);
-          }
-
-          // GET FORM
-          const d2: Record<string, any> = {
-            songId: track.id,
-          };
-          const formDataD2 = new FormData();
-          for (const key in d2) {
-            formDataD2.append(key, d2[key]);
-          }
-
           setSubmitting(true);
-          const { data } = await actions.rankactions.getRank(formDataD2);
-          if (data && data.length > 0) {
-            await actions.rankactions.updateRank(formDataD1);
-          } else {
-            await actions.rankactions.postRank(formDataD1);
-          }
+          submitForm({
+            track,
+            reviewRef,
+            rating,
+          });
+
+          const formDataD2 = produceGetForm(track);
+
           const p = await actions.rankactions.getRank(formDataD2);
           if (p.data && p.data?.length > 0) {
             setRating((p.data[0] as RankingsTable).rating / 10);
@@ -120,11 +163,6 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          {/* <DialogTitle>Share link</DialogTitle>
-          <DialogDescription>
-            Anyone who has this link will be able to view this.
-          </DialogDescription> */}
-
           <TrackSummary
             avatarClass="size-15"
             track={track}
@@ -142,16 +180,51 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
         <div className="flex items-center gap-2">
           <div className="grid flex-1 gap-2">
             <Label htmlFor="review">Review</Label>
-            <Textarea id="review" />
+            <Textarea
+              value={reviewValue}
+              onChange={(e) => setReviewValue(e.target.value)}
+              ref={reviewRef}
+            />
           </div>
         </div>
 
         <DialogFooter className="sm:justify-end">
+          <Button
+            disabled={submitting}
+            variant="destructive"
+            className="mr-auto"
+            onClick={async () => {
+              const f = new FormData();
+              f.append("songId", track.id as any);
+              setSubmitting(true);
+              await actions.rankactions.deleteRank(f);
+              // TODO: Probably change this to make it synced with the db
+              setIsOpen(false);
+              setRating(0);
+              setReviewValue("");
+              setSubmitting(false);
+            }}
+          >
+            Delete
+          </Button>
           <DialogClose asChild>
             <Button variant="secondary">Close</Button>
           </DialogClose>
-
-          <Button>Submit</Button>
+          <Button
+            onClick={async () => {
+              setSubmitting(true);
+              await submitForm({
+                reviewRef,
+                rating,
+                track,
+              });
+              setIsOpen(false);
+              setSubmitting(false);
+            }}
+            disabled={submitting}
+          >
+            Submit
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
