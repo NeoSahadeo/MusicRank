@@ -93,7 +93,10 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
         data: RankingsTable[];
       };
       if (data && data.length > 0) {
-        review = data[0].review;
+        // Weird supabase behaviour
+        if (data[0].review != "null") {
+          review = data[0].review;
+        }
         setRating(data[0].rating / 10);
       }
       setReviewValue(review);

@@ -7,7 +7,7 @@ import {
 import MusicList from "./music-list";
 import { Button } from "../ui/button";
 import { useStore } from "@nanostores/react";
-import { $search } from "@/stores/search";
+import { $search, setSearch, setSearchState } from "@/stores/search";
 import { $tracks, setTracks, resetTracks } from "@/stores/tracks";
 
 function MusicInfLoading() {
@@ -21,6 +21,10 @@ function MusicInfLoading() {
     search: string;
     pageParam: number;
   }) => {
+    if (search) {
+      setSearchState(true);
+    }
+
     const encodedUrl = encodeURIComponent(
       search
         ? `https://api.deezer.com/search?q=${search}&index=${pageParam}`
@@ -30,6 +34,7 @@ function MusicInfLoading() {
     const res = await fetch(
       `${import.meta.env.BASE_URL}api/proxy?url=${encodedUrl}`,
     );
+    setSearchState(false);
     return await res.json();
   };
 

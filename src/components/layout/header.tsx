@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { navigate } from "astro:transitions/client";
 import { actions } from "astro:actions";
+import { $theme, setTheme, toggleTheme } from "@/stores/theme.ts";
+import { useStore } from "@nanostores/react";
 
 const links = [
   { href: "/", label: "Home", icon: "" },
@@ -31,6 +33,8 @@ const links = [
 ];
 
 export default function Header({ userData }: { userData?: UserType }) {
+  const theme = useStore($theme);
+
   let user: UserType["user"] | null = null;
   if (userData) {
     user = userData.user;
@@ -44,7 +48,7 @@ export default function Header({ userData }: { userData?: UserType }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/50 backdrop-blur-lg">
       <div className="flex h-16 items-center px-3">
-        <span className="text-white font-bold mr-2">MusicRank</span>
+        <span className="text-primary font-bold mr-2">MusicRank</span>
         <span>
           <SearchBar />
         </span>
@@ -96,6 +100,16 @@ export default function Header({ userData }: { userData?: UserType }) {
                     }
                   >
                     GitHub
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      toggleTheme();
+                    }}
+                  >
+                    {theme === "dark" ? "Switch to Light" : "Switch to Dark"}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
