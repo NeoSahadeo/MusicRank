@@ -71,7 +71,7 @@ export default function Header({ userData }: { userData?: UserType }) {
                 <div
                   className="w-8 h-8 bg-white rounded-full hover:cursor-pointer outline-white outline-1"
                   style={{
-                    backgroundImage: `url(${user.user_metadata.picture})`,
+                    backgroundImage: `url(${user.user_metadata.picture ?? "https://i.imgur.com/kB7hu0k.png"})`,
                     backgroundPosition: "center",
                     backgroundSize: "cover",
                   }}

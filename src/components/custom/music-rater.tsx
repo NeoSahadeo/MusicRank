@@ -11,6 +11,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTrigger,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -23,6 +24,7 @@ import type { DeezerTrack } from "@/types/deezer";
 import type { RankingsTable } from "@/types/supabase";
 
 import { actions } from "astro:actions";
+import { Description } from "@radix-ui/react-dialog";
 
 type MusicCardProps = {
   track: DeezerTrack;
@@ -113,17 +115,18 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
           if (isOpen) return;
 
           setSubmitting(true);
-          submitForm({
+          await submitForm({
             track,
             reviewRef,
-            rating,
+            rating: e,
           });
 
-          const formDataD2 = produceGetForm(track);
-
-          const p = await actions.rankactions.getRank(formDataD2);
-          if (p.data && p.data?.length > 0) {
-            setRating((p.data[0] as RankingsTable).rating / 10);
+          const f = produceGetForm(track);
+          const { data } = (await actions.rankactions.getRank(f)) as any as {
+            data: RankingsTable[];
+          };
+          if (data && data?.length > 0) {
+            setRating(data[0].rating / 10);
           } else {
             setRating(initialValue);
           }
@@ -162,6 +165,12 @@ export function MusicRater({ track, orientation }: MusicCardProps) {
       </span>
 
       <DialogContent className="sm:max-w-md">
+        <Description className="hidden">
+          Rate and review the song {track.title}
+        </Description>
+        <DialogTitle className="hidden">
+          Rate and Review for {track.title}
+        </DialogTitle>
         <DialogHeader>
           <TrackSummary
             avatarClass="size-15"
