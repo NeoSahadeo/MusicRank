@@ -16,9 +16,10 @@ import {
   RectangleVertical,
 } from "lucide-react";
 import { MusicRater } from "./music-rater";
+import type { DeezerTrack } from "@/types/deezer";
 
 interface MusicListProps {
-  tracks: any[];
+  tracks: Array<DeezerTrack>;
 }
 
 export default function MusicList({ tracks }: MusicListProps) {

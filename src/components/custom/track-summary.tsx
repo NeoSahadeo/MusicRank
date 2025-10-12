@@ -8,11 +8,23 @@ interface Props {
   avatarClass?: string;
 }
 
+interface ClickOpts {
+  target: "_blank" | "_top" | "_self" | "_parent";
+}
+
+function handleClick(e: any, href = "", opts?: ClickOpts) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  window.open(href, opts?.target ?? "_self");
+}
+
 export default function TrackSummary({
   track,
   orientation = "horizontal",
   avatarClass,
 }: Props) {
+  console.log(track);
   return (
     <div
       className={cn(
@@ -32,16 +44,32 @@ export default function TrackSummary({
         )}
       >
         <h3 className="font-semibold truncate text-sm text-foreground">
-          <a href={track.link} className="hover:underline">
+          <a
+            onClick={(e) => handleClick(e, track.link, { target: "_blank" })}
+            className="hover:underline"
+          >
             {track.title}
           </a>
         </h3>
         <a
-          href={track.artist.link}
+          onClick={(e) =>
+            handleClick(e, track.artist.link, { target: "_blank" })
+          }
           className="text-xs text-muted-foreground truncate hover:underline"
           target="_blank"
         >
           {track.artist.name}
+        </a>
+        <a
+          onClick={(e) =>
+            handleClick(
+              e,
+              `${import.meta.env.BASE_URL}viewer/album?id=${track.album.id}`,
+            )
+          }
+          className="text-xs text-muted-foreground truncate hover:underline"
+        >
+          {track.album.title}
         </a>
       </div>
     </div>

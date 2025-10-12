@@ -1,0 +1,31 @@
+---
+import { actions } from "astro:actions";
+import AlbumView from "@/components/custom/AlbumView";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import type { RankingsTable } from "@/types/supabase";
+
+const id = Astro.url.searchParams.get("id");
+
+import { loadAlbum } from "@/lib/deezer";
+import type { DeezerTrack } from "@/types/deezer";
+
+const data = await loadAlbum(parseInt(id!));
+
+const p = (await Astro.callAction(actions.rankactions.getAllRankings, {})) as {
+	data: RankingsTable[];
+};
+
+for (const value in p.data) {
+	data.data.tracks.data.filter((e) => {
+		const match = e.id === p.data[value].song_id;
+		if (match) {
+			e.review = p.data[value].review;
+			e.rating = p.data[value].rating;
+		}
+	});
+}
+---
+
+<BaseLayout pageTitle="Album">
+	<AlbumView data={data.data} client:only="react" />
+</BaseLayout>
